@@ -15,6 +15,10 @@ class Robot(wpi.SampleRobot):
         self.right = wpi.SpeedControllerGroup(self.frontR, self.rearR)
         self.left = wpi.SpeedControllerGroup(self.frontL, self.rearL)
         self.dTrain = wpi.drive.DifferentialDrive(self.right, self.left)
+        self.xDeadZone = .10
+        self.yDeadZone = .05
+        self.xConstant = 1.7
+        self.yConstant = .85
 
     def autonomous(self):
         while self.isAutonomous() and self.isEnabled():
@@ -26,14 +30,17 @@ class Robot(wpi.SampleRobot):
 
     def operatorControl(self):
         while self.isOperatorControl() and self.isEnabled():
-            self.dTrain.arcadeDrive(self.joystick)
-            '''angle = joystick.getDirectionRadians()
-            print(angle * (180 / pi))
+            angle = self.joystick.getX()
             speed = self.joystick.getY()
-            if speed <= 0:
-                self.dTrain.arcadeDrive(speed, angle)
+            if abs(angle) <= self.xDeadZone:
+                angle = 0.0
             else:
-                self.dTrain.arcadeDrive(speed, -angle)'''
+                angle = self.xConstant**abs(angle) - 1
+            if abs(speed) <= self.yDeadZone:
+                speed = 0.0
+            else:
+                speed = speed * self.yConstant
+            self.dTrain.arcadeDrive(xSpeed = -speed, zRotation = -angle)
 
 if __name__ == '__main__':
     wpi.run(Robot)
