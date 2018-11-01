@@ -15,9 +15,9 @@ class Robot(wpi.SampleRobot):
         self.right = wpi.SpeedControllerGroup(self.frontR, self.rearR)
         self.left = wpi.SpeedControllerGroup(self.frontL, self.rearL)
         self.dTrain = wpi.drive.DifferentialDrive(self.right, self.left)
-        self.xDeadZone = .10
+        self.xDeadZone = .05
         self.yDeadZone = .05
-        self.xConstant = 1.7
+        self.xConstant = .55
         self.yConstant = .85
 
     def autonomous(self):
@@ -35,7 +35,7 @@ class Robot(wpi.SampleRobot):
             if abs(angle) <= self.xDeadZone:
                 angle = 0.0
             else:
-                angle = self.xConstant**abs(angle) - 1
+                angle = self.xConstant*angle**3
             if abs(speed) <= self.yDeadZone:
                 speed = 0.0
             else:
