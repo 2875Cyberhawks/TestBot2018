@@ -6,9 +6,9 @@ class Robot(wpi.SampleRobot):
 
     def robotInit(self):
         #update channels
-        self.frontR = wpi.Talon(0)
-        self.frontL = wpi.Talon(1)
-        self.rearR = wpi.Talon(2)
+        self.frontR = wpi.Talon(1)
+        self.frontL = wpi.Talon(2)
+        self.rearR = wpi.Talon(0)
         self.rearL = wpi.Talon(3)
         self.gyro = wpi.AnalogGyro(0)
         self.joystick = wpi.Joystick(0)
