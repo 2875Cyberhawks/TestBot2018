@@ -40,7 +40,7 @@ class Robot(wpi.SampleRobot):
                 speed = 0.0
             else:
                 speed = speed * self.yConstant
-            self.dTrain.arcadeDrive(xSpeed = -speed, zRotation = -angle)
+            self.dTrain.arcadeDrive(xSpeed = speed, zRotation = -angle)
 
 if __name__ == '__main__':
     wpi.run(Robot)
