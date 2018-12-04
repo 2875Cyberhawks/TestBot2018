@@ -1,5 +1,8 @@
 import wpilib as wpi
 from wpilib.drive import DifferentialDrive
+from networktables import NetworkTables
+import logging
+import time
 #from math import pi
 
 class Robot(wpi.SampleRobot):
@@ -19,6 +22,15 @@ class Robot(wpi.SampleRobot):
         self.yDeadZone = .05
         self.xConstant = .55
         self.yConstant = .85
+        logging.basicConfig(level=logging.DEBUG)
+        NetworkTables.initialize(server = '10.28.75.2')
+        NetworkTables.addConnectionListener(connectionListener, immediateNotify=True)
+        with cond:
+            print("Waiting")
+            if not notified[0]:
+                cond.wait()
+        print("Connected")
+        self.table = NetworkTables.getTable('SmartDashboard')
 
     def autonomous(self):
         while self.isAutonomous() and self.isEnabled():
